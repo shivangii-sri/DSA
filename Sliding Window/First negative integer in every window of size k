@@ -1,0 +1,58 @@
+Question Link GFG : https://practice.geeksforgeeks.org/problems/first-negative-integer-in-every-window-of-size-k3345/1
+
+Approach : 
+1. Create a Queue or a Dequeue, we iterate in the array and keep adding all the negative numbers in this "negativeDeque"
+2. If window size is not reached, we simple do j++;
+3. Else if window size is reached : 
+      - We add 0 to res, if negativeDeque size is 0 i.e contains no negative elements.
+      - Or else if negativeDeque size is not 0, We add first negative number from negativeDeque into res. 
+      - Do i++, j++ to maintain window size.
+
+TC = O(N) - one for loop
+SC = O(N) - Deque
+
+
+JAVA Code : 
+
+class Compute {    
+    public long[] printFirstNegativeInteger(long A[], int N, int K)
+    {
+        Deque<Long> negativeDeque = new LinkedList<>();
+        long[] res = new long[N - K + 1];
+        int ind = 0;
+        
+        int i=0;
+        int j=0;
+        
+        
+        while( j < N){
+            //calculation
+            if(A[j] < 0) {
+                negativeDeque.addLast(A[j]);
+            }
+
+            //Checking window size
+            if(j - i + 1  < K){
+                j++;
+            }
+            else if(j - i + 1 == K){
+                
+                if(negativeDeque.size() == 0) {
+                    res[ind++] = 0;                 
+                }        
+                else {
+                    res[ind++] = negativeDeque.peekFirst();
+                    
+                    if(negativeDeque.peekFirst() == A[i]){
+                        negativeDeque.pollFirst();
+                        
+                    }                    
+                }
+                //maintain window size once it is achieved
+                i++;
+                j++;
+            }
+        }        
+        return res;                
+    }
+}
